@@ -3,47 +3,48 @@ const promicro = require('../../src/footprints/promicro')
 const normalize = str => str.split('\n').map(x => x.trim()).filter(x => x.length).join('\n')
 const mapValues = (obj, f) => Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, f(v)]))
 
+const netParams = Object.fromEntries(Object.entries(promicro.params).filter(([, v]) => typeof v === 'object' && 'type' in v && v.type === 'net'));
+
 describe('promicro', function() {
   it('nets', function() {
-    promicro.nets.should.be.deep.equal({
-      GND: 'GND',
-      RAW: 'RAW',
-      RST: 'RST',
-      VCC: 'VCC',
-      P0: 'P0',
-      P1: 'P1',
-      P2: 'P2',
-      P3: 'P3',
-      P4: 'P4',
-      P5: 'P5',
-      P6: 'P6',
-      P7: 'P7',
-      P8: 'P8',
-      P9: 'P9',
-      P10: 'P10',
-      P14: 'P14',
-      P15: 'P15',
-      P16: 'P16',
-      P18: 'P18',
-      P19: 'P19',
-      P20: 'P20',
-      P21: 'P21',
+    netParams.should.be.deep.equal({
+      GND: { type: 'net', value: 'GND' },
+      RAW: { type: 'net', value: 'RAW' },
+      RST: { type: 'net', value: 'RST' },
+      VCC: { type: 'net', value: 'VCC' },
+      P0: { type: 'net', value: 'P0' },
+      P1: { type: 'net', value: 'P1' },
+      P2: { type: 'net', value: 'P2' },
+      P3: { type: 'net', value: 'P3' },
+      P4: { type: 'net', value: 'P4' },
+      P5: { type: 'net', value: 'P5' },
+      P6: { type: 'net', value: 'P6' },
+      P7: { type: 'net', value: 'P7' },
+      P8: { type: 'net', value: 'P8' },
+      P9: { type: 'net', value: 'P9' },
+      P10: { type: 'net', value: 'P10' },
+      P14: { type: 'net', value: 'P14' },
+      P15: { type: 'net', value: 'P15' },
+      P16: { type: 'net', value: 'P16' },
+      P18: { type: 'net', value: 'P18' },
+      P19: { type: 'net', value: 'P19' },
+      P20: { type: 'net', value: 'P20' },
+      P21: { type: 'net', value: 'P21' },
     })
   })
 
   describe('body', () => {
     it('orientation: down', function() {
       let n = 1
-      let net = mapValues(promicro.nets, v => { return { str: `(net ${n++} ${v})` } })
+      let net = mapValues(netParams, v => { return { str: `(net ${n++} ${v.value})` } })
       normalize(promicro.body({
-        param: {
-          orientation: 'down',
-        },
+        designator: 'MCU',
+        orientation: 'down',
+        r: 45,
         at: '(66.1416 36.8808)',
-        rot: 45,
         ref: 'C1',
         ref_hide: 'hide',
-        net,
+        ...net,
       })).should.equal(normalize(`
         (module ProMicro (layer F.Cu) (tedit 5B307E4C)
         (66.1416 36.8808)
@@ -121,16 +122,15 @@ describe('promicro', function() {
     })
     it('orientation: up', function() {
       let n = 1
-      let net = mapValues(promicro.nets, v => { return { str: `(net ${n++} ${v})` } })
+      let net = mapValues(netParams, v => { return { str: `(net ${n++} ${v.value})` } })
       normalize(promicro.body({
-        param: {
-          orientation: 'up',
-        },
+        designator: 'MCU',
+        orientation: 'up',
+        r: 45,
         at: '(66.1416 36.8808)',
-        rot: 45,
         ref: 'C1',
         ref_hide: 'hide',
-        net,
+        ...net,
       })).should.equal(normalize(`
         (module ProMicro (layer F.Cu) (tedit 5B307E4C)
         (66.1416 36.8808)
@@ -148,9 +148,9 @@ describe('promicro', function() {
         (fp_line (start 15.24 -8.89) (end -17.78 -8.89) (layer F.SilkS) (width 0.15))
         (fp_line (start -17.78 -8.89) (end -17.78 8.89) (layer F.SilkS) (width 0.15))
 
-        (fp_line (start -15.24 -6.35) (end -12.70 -6.35) (layer F.SilkS) (width 0.15))
-        (fp_line (start -15.24 -6.35) (end -15.24 -8.89) (layer F.SilkS) (width 0.15))
+        (fp_line (start -12.70 -6.35) (end -15.24 -6.35) (layer F.SilkS) (width 0.15))
         (fp_line (start -12.70 -6.35) (end -12.70 -8.89) (layer F.SilkS) (width 0.15))
+        (fp_line (start -15.24 -6.35) (end -15.24 -8.89) (layer F.SilkS) (width 0.15))
 
         (fp_text user RAW (at -13.97 -4.80 135) (layer F.SilkS) (effects (font (size 0.8 0.8) (thickness 0.15))))
         (fp_text user GND (at -11.43 -4.80 135) (layer F.SilkS) (effects (font (size 0.8 0.8) (thickness 0.15))))
