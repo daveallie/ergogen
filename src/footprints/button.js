@@ -1,19 +1,44 @@
 module.exports = {
-    nets: {
-        from: undefined,
-        to: undefined
-    },
-    params: {
-        class: 'B', // for Button
-        side: 'F'
-    },
-    body: p => `
-    
-    (module E73:SW_TACT_ALPS_SKQGABE010 (layer F.Cu) (tstamp 5BF2CC94)
+  nets: {
+    from: undefined,
+    to: undefined
+  },
+  params: {
+    class: 'B', // for Button
+    side: 'F'
+  },
+  body: p => {
+    if (p.param.variant === 'PTS636 SK43 LFS') {
+      return `
+        (module SW_TACT_PTS636_SK43_LFS (layer F.Cu) (tstamp 5BF2CC94)
+      
+          (descr "Low-profile SMD Tactile Switch, https://www.e-switch.com/product-catalog/tact/product-lines/tl3342-series-low-profile-smt-tact-switch")
+          (tags "SPST Tactile Switch")
+      
+          ${p.at /* parametric position */}
+          ${'' /* footprint reference */}
+          (fp_text reference "${p.ref}" (at 0 0) (layer F.SilkS) ${p.ref_hide} (effects (font (size 1.27 1.27) (thickness 0.15))))
+          (fp_text value "" (at 0 0) (layer F.SilkS) hide (effects (font (size 1.27 1.27) (thickness 0.15))))
+          
+          ${'' /* outline */}
+          (fp_line (start -3 -1.75) (end 3 -1.75) (layer ${p.param.side}.SilkS) (width 0.15))
+          (fp_line (start 3 -1.75) (end 3 1.75) (layer ${p.param.side}.SilkS) (width 0.15))
+          (fp_line (start 3 1.75) (end -3 1.75) (layer ${p.param.side}.SilkS) (width 0.15))
+          (fp_line (start -3 1.75) (end -3 -1.75) (layer ${p.param.side}.SilkS) (width 0.15))
+          
+          ${'' /* pins */}
+          (pad 1 thru_hole circle (at 3.2 0 ${p.rot}) (size 2 2) (drill 1.2) (layers *.Cu *.Mask) ${p.net.from.str})
+          (pad 2 thru_hole circle (at -3.2 0 ${p.rot}) (size 2 2) (drill 1.2) (layers *.Cu *.Mask) ${p.net.to.str})
+        )
+      `;
+    }
 
+    return `
+      (module E73:SW_TACT_ALPS_SKQGABE010 (layer F.Cu) (tstamp 5BF2CC94)
+    
         (descr "Low-profile SMD Tactile Switch, https://www.e-switch.com/product-catalog/tact/product-lines/tl3342-series-low-profile-smt-tact-switch")
         (tags "SPST Tactile Switch")
-
+    
         ${p.at /* parametric position */}
         ${'' /* footprint reference */}
         (fp_text reference "${p.ref}" (at 0 0) (layer F.SilkS) ${p.ref_hide} (effects (font (size 1.27 1.27) (thickness 0.15))))
@@ -34,7 +59,7 @@ module.exports = {
         (pad 1 smd rect (at 3.1 -1.85 ${p.rot}) (size 1.8 1.1) (layers ${p.param.side}.Cu ${p.param.side}.Paste ${p.param.side}.Mask) ${p.net.from.str})
         (pad 2 smd rect (at -3.1 1.85 ${p.rot}) (size 1.8 1.1) (layers ${p.param.side}.Cu ${p.param.side}.Paste ${p.param.side}.Mask) ${p.net.to.str})
         (pad 2 smd rect (at 3.1 1.85 ${p.rot}) (size 1.8 1.1) (layers ${p.param.side}.Cu ${p.param.side}.Paste ${p.param.side}.Mask) ${p.net.to.str})
-    )
-    
-    `
+      )
+    `;
+  }
 }
