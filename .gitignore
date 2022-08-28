@@ -118,3 +118,5 @@ dist
 # Project specific
 output
 temp*
+
+.idea/
