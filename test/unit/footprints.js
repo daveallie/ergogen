@@ -92,7 +92,7 @@ describe('promicro', function() {
         (fp_text user P08 (at 11.43 -4.80 135) (layer F.SilkS) (effects (font (size 0.8 0.8) (thickness 0.15))))
         (fp_text user P09 (at 13.97 -4.80 135) (layer F.SilkS) (effects (font (size 0.8 0.8) (thickness 0.15))))
 
-        (pad 1 thru_hole rect (at -13.97 7.62 45) (size 1.7526 1.7526) (drill 1.0922) (layers *.Cu *.SilkS *.Mask) (net 1 RAW))
+        (pad 1 thru_hole rect (at -13.97 7.62 0) (size 1.7526 1.7526) (drill 1.0922) (layers *.Cu *.SilkS *.Mask) (net 1 RAW))
         (pad 2 thru_hole circle (at -11.43 7.62 0) (size 1.7526 1.7526) (drill 1.0922) (layers *.Cu *.SilkS *.Mask) (net 2 GND))
         (pad 3 thru_hole circle (at -8.89 7.62 0) (size 1.7526 1.7526) (drill 1.0922) (layers *.Cu *.SilkS *.Mask) (net 3 RST))
         (pad 4 thru_hole circle (at -6.35 7.62 0) (size 1.7526 1.7526) (drill 1.0922) (layers *.Cu *.SilkS *.Mask) (net 4 VCC))
@@ -178,7 +178,7 @@ describe('promicro', function() {
         (fp_text user P08 (at 11.43 4.80 135) (layer F.SilkS) (effects (font (size 0.8 0.8) (thickness 0.15))))
         (fp_text user P09 (at 13.97 4.80 135) (layer F.SilkS) (effects (font (size 0.8 0.8) (thickness 0.15))))
 
-        (pad 1 thru_hole rect (at -13.97 -7.62 45) (size 1.7526 1.7526) (drill 1.0922) (layers *.Cu *.SilkS *.Mask) (net 1 RAW))
+        (pad 1 thru_hole rect (at -13.97 -7.62 0) (size 1.7526 1.7526) (drill 1.0922) (layers *.Cu *.SilkS *.Mask) (net 1 RAW))
         (pad 2 thru_hole circle (at -11.43 -7.62 0) (size 1.7526 1.7526) (drill 1.0922) (layers *.Cu *.SilkS *.Mask) (net 2 GND))
         (pad 3 thru_hole circle (at -8.89 -7.62 0) (size 1.7526 1.7526) (drill 1.0922) (layers *.Cu *.SilkS *.Mask) (net 3 RST))
         (pad 4 thru_hole circle (at -6.35 -7.62 0) (size 1.7526 1.7526) (drill 1.0922) (layers *.Cu *.SilkS *.Mask) (net 4 VCC))

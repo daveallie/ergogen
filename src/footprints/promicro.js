@@ -9,7 +9,7 @@ const row_spacing = 6 * pitch
 
 const pins = [
   // left
-  ['RAW', {shape: 'rect', angle: 45}],
+  ['RAW', {shape: 'rect'}],
   ['GND', {}],
   ['RST', {}],
   ['VCC', {}],
