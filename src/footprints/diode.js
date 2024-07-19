@@ -5,7 +5,7 @@ module.exports = {
     to: undefined,
     tht: true,
     smd: true,
-    internalVia: false
+    via: 'none',
   },
   body: p => {
     // SMD pads on both sides: SOD-123 footprint
@@ -22,11 +22,19 @@ module.exports = {
       (pad 2 thru_hole circle (at 3.81 0 ${p.r}) (size 1.905 1.905) (drill 0.9906) (layers *.Cu *.Mask) ${p.from})
     ` : '';
 
-    // Internal vias
-    const internalVias = p.internalVia ? `
-      (pad 1 thru_hole circle (at -0.45 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu) ${p.to})
-      (pad 2 thru_hole circle (at 0.45 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu) ${p.from})
-    ` : '';
+    // Vias
+    let vias = '';
+    if (p.via === 'pad') {
+      vias = `
+        (pad 1 thru_hole circle (at -1.65 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu) ${p.to})
+        (pad 2 thru_hole circle (at 1.65 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu) ${p.from})
+      `;
+    } else if (p.via === 'middle') {
+      vias = `
+        (pad 1 thru_hole circle (at -0.45 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu) ${p.to})
+        (pad 2 thru_hole circle (at 0.45 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu) ${p.from})
+      `;
+    }
 
     return `
       (module ComboDiode (layer F.Cu) (tedit 5B24D78E)
@@ -54,7 +62,7 @@ module.exports = {
 
         ${smdPads}
         ${thtTerminals}
-        ${internalVias}
+        ${vias}
       )
     `;
   }

@@ -22,11 +22,20 @@ pcbs.pcb.footprints:
       smd: true
       tht: false
 
-  # SMD with vias
+  # SMD with middle vias
   - what: diode
     params:
       from: from
       to: to
       smd: true
       tht: false
-      internalVia: true
+      via: middle
+
+  # SMD with vias in pads
+  - what: diode
+    params:
+      from: from
+      to: to
+      smd: true
+      tht: false
+      via: pad
