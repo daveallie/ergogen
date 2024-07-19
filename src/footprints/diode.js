@@ -4,7 +4,8 @@ module.exports = {
     from: undefined,
     to: undefined,
     tht: true,
-    smd: true
+    smd: true,
+    internalVia: false
   },
   body: p => {
     // SMD pads on both sides: SOD-123 footprint
@@ -19,6 +20,12 @@ module.exports = {
     const thtTerminals = p.tht ? `
       (pad 1 thru_hole rect (at -3.81 0 ${p.r}) (size 1.778 1.778) (drill 0.9906) (layers *.Cu *.Mask) ${p.to})
       (pad 2 thru_hole circle (at 3.81 0 ${p.r}) (size 1.905 1.905) (drill 0.9906) (layers *.Cu *.Mask) ${p.from})
+    ` : '';
+
+    // Internal vias
+    const internalVias = p.internalVia ? `
+      (pad 1 thru_hole circle (at -0.45 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu) ${p.to})
+      (pad 2 thru_hole circle (at 0.45 0) (size 0.6 0.6) (drill 0.3) (layers *.Cu) ${p.from})
     ` : '';
 
     return `
@@ -47,6 +54,7 @@ module.exports = {
 
         ${smdPads}
         ${thtTerminals}
+        ${internalVias}
       )
     `;
   }

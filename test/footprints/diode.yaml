@@ -21,3 +21,12 @@ pcbs.pcb.footprints:
       to: to
       smd: true
       tht: false
+
+  # SMD with vias
+  - what: diode
+    params:
+      from: from
+      to: to
+      smd: true
+      tht: false
+      internalVia: true
