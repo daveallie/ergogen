@@ -43,16 +43,21 @@ module.exports = {
   params: {
     designator: 'MCU',
     orientation: 'down',
+    side: 'F',
     ...Object.fromEntries(pins.map(([name, _]) => [name, { type: 'net', value: name }])),
   },
   body: p => {
+    const isFlipped = p.orientation === 'down' && p.side === 'F' || p.orientation === 'up' && p.side === 'B';
+    const orientation = isFlipped ? 1 : -1;
+    const textJustify = p.side === 'B' ? '(justify mirror)' : '';
+
     const standard = `
       (module ProMicro (layer F.Cu) (tedit 5B307E4C)
       ${p.at /* parametric position */}
 
       ${'' /* footprint reference */}
-      (fp_text reference "${p.ref}" (at 0 0) (layer F.SilkS) ${p.ref_hide} (effects (font (size 1.27 1.27) (thickness 0.15))))
-      (fp_text value "" (at 0 0) (layer F.SilkS) hide (effects (font (size 1.27 1.27) (thickness 0.15))))
+      (fp_text reference "${p.ref}" (at 0 0) (layer ${p.side}.SilkS) ${p.ref_hide} (effects (font (size 1.27 1.27) (thickness 0.15)) ${textJustify}))
+      (fp_text value "" (at 0 0) (layer ${p.side}.SilkS) hide (effects (font (size 1.27 1.27) (thickness 0.15))))
     
       ${''/* illustration of the (possible) USB port overhang */}
       (fp_line (start -19.304 -3.81) (end -14.224 -3.81) (layer Dwgs.User) (width 0.15))
@@ -61,13 +66,11 @@ module.exports = {
       (fp_line (start -14.224 -3.81) (end -14.224 3.81) (layer Dwgs.User) (width 0.15))
     
       ${''/* component outline */}
-      (fp_line (start -17.78 8.89) (end 15.24 8.89) (layer F.SilkS) (width 0.15))
-      (fp_line (start 15.24 8.89) (end 15.24 -8.89) (layer F.SilkS) (width 0.15))
-      (fp_line (start 15.24 -8.89) (end -17.78 -8.89) (layer F.SilkS) (width 0.15))
-      (fp_line (start -17.78 -8.89) (end -17.78 8.89) (layer F.SilkS) (width 0.15))
+      (fp_line (start -17.78 8.89) (end 15.24 8.89) (layer ${p.side}.SilkS) (width 0.15))
+      (fp_line (start 15.24 8.89) (end 15.24 -8.89) (layer ${p.side}.SilkS) (width 0.15))
+      (fp_line (start 15.24 -8.89) (end -17.78 -8.89) (layer ${p.side}.SilkS) (width 0.15))
+      (fp_line (start -17.78 -8.89) (end -17.78 8.89) (layer ${p.side}.SilkS) (width 0.15))
       `
-
-    const orientation = p.orientation == 'down' ? 1 : -1
 
     function position(pin, row_distance) {
       const row = pin % pins_per_side
@@ -79,11 +82,11 @@ module.exports = {
     }
 
     function line(start, end) {
-      return `(fp_line (start ${start.x.toFixed(2)} ${start.y.toFixed(2)}) (end ${end.x.toFixed(2)} ${end.y.toFixed(2)}) (layer F.SilkS) (width 0.15))`
+      return `(fp_line (start ${start.x.toFixed(2)} ${start.y.toFixed(2)}) (end ${end.x.toFixed(2)} ${end.y.toFixed(2)}) (layer ${p.side}.SilkS) (width 0.15))`
     }
 
     function pin_silk(pin) {
-      return `(fp_text user ${pin.silk} (at ${pin.x.toFixed(2)} ${pin.y.toFixed(2)} ${p.r + 90}) (layer F.SilkS) (effects (font (size 0.8 0.8) (thickness 0.15))))`
+      return `(fp_text user ${pin.silk} (at ${pin.x.toFixed(2)} ${pin.y.toFixed(2)} ${p.r + 90}) (layer ${p.side}.SilkS) (effects (font (size 0.8 0.8) (thickness 0.15)) ${textJustify}))`
     }
 
     function thru_hole_pad(pad) {
